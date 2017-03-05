@@ -16,6 +16,8 @@ function initGame() {
     "water", "stone", "stone", "stone", "stone", "grass"
   ];
 
+  var targetScore = 1;
+
   $(window).keypress(onKeyPress);
   function onKeyPress(event) {
     switch(event.key) {
@@ -36,7 +38,7 @@ function initGame() {
   drawTiles();
   drawObstacles();
   drawGems();
-  openGate();
+
 
 
 
@@ -79,31 +81,41 @@ function initGame() {
       $('body').append(newGem);
     });
   }
+
+  
   function move(deltaX, deltaY) {
     if(canMove(deltaX, deltaY)) {
       playerX += deltaX;
       playerY += deltaY;
     }
-    // after moving, check to see if there's a gem on the current tile
+    checkIfCollectGem();
+  }
+
+
+  function checkIfCollectGem() {
     for(var i = 0; i < gems.length; i++) {
       if(gems[i].x == playerX && gems[i].y == playerY && !gems[i].taken) {
         $("#gem"+i).remove();
         gems[i].taken = true;
         score++;
+        openGate();
       }
     }
-    console.log(score);
-
   }
 
+
   function openGate() {
-    var gate = $("<img src='images/gate.png'>");
-    gate.css({
-      "position": "absolute",
-      "left": Math.round(Math.random() * 4) * tileWidth + "px",
-      "top": -5 + "px"
-    });
-    $('body').append(gate);
+    if(targetScore === score) {
+      console.log("gate works");
+      var gate = $("<img src='images/gate.png'>");
+      gate.css({
+        "position": "absolute",
+        "left": Math.round(Math.random() * 4) * tileWidth + "px",
+        "top": -5 + "px"
+      });
+      $('body').append(gate);
+    }
+
 
   }
 
