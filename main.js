@@ -16,6 +16,7 @@ function initGame() {
   ];
 
   var crtLevel = 0;
+  var gateX = Math.round(Math.random() * 4);
 
 
   $(window).keypress(onKeyPress);
@@ -60,7 +61,7 @@ function initGame() {
 
   function drawObstacles() {
     levels[crtLevel].obstacles.forEach(function(obstacle) {
-      var newObstacle = $("<img src='images/Rock.png'></img>");
+      var newObstacle = $("<img class='element' src='images/Rock.png'></img>");
       newObstacle.css({
         left: (tileWidth * obstacle.x) + 'px',
         top: (tileHeight * obstacle.y) + 'px',
@@ -72,7 +73,7 @@ function initGame() {
 
   function drawGems() {
     levels[crtLevel].gems.forEach(function(gem, index){
-      var newGem = $('<img id = "gem' + index + '" src="images/Gem_Orange.png"></img>');
+      var newGem = $('<img class="element" id = "gem' + index + '" src="images/Gem_Orange.png"></img>');
       newGem.css({
         left: (tileWidth * gem.x) + "px",
         top: (tileHeight * gem.y) + "px",
@@ -89,6 +90,7 @@ function initGame() {
       playerY += deltaY;
     }
     checkIfCollectGem();
+    checkIfOnGate();
   }
 
 
@@ -107,16 +109,27 @@ function initGame() {
   function openGate() {
     if(levels[crtLevel].scoreRequired === score) {
       console.log("gate works");
-      var gate = $("<img src='images/gate.png'>");
+      var gate = $("<img class='element' src='images/gate.png'>");
       gate.css({
         "position": "absolute",
-        "left": Math.round(Math.random() * 4) * tileWidth + "px",
+        "left": gateX * tileWidth + "px",
         "top": -5 + "px"
       });
       $('body').append(gate);
     }
+  }
 
+  function checkIfOnGate() {
+    if(gateX === playerX && playerY === 0 && levels[crtLevel].scoreRequired === score) {
+      $(".element").remove();
+      if(levels[crtLevel+1]) {
+        score = 0;
+        crtLevel++;
+        drawGems();
+        drawObstacles();
+      }
 
+    }
   }
 
   function canMove(deltaX, deltaY) {
