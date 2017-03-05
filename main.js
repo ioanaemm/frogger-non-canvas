@@ -12,6 +12,10 @@ function initGame() {
   var gems = [{ x: 2, y: 3}, {x: 3, y: 4}];
   var score = 0;
 
+  var rows = [
+    "water", "stone", "stone", "stone", "stone", "grass"
+  ];
+
   $(window).keypress(onKeyPress);
   function onKeyPress(event) {
     switch(event.key) {
@@ -29,8 +33,29 @@ function initGame() {
         break;
     }
   }
+  drawTiles();
   drawObstacles();
   drawGems();
+
+
+
+  function drawTiles() {
+    rows.forEach(function(tileType, rowIndex){
+      for(var i = 0; i < boardWidth; i++) {
+        var newTile = $("<img src='images/" + tileType + "-block.png'>");
+        newTile.css({
+          "position": "absolute",
+          "top": tileHeight * rowIndex + "px",
+          "left": tileWidth * i + "px",
+          "z-index": -1
+        });
+        $('body').append(newTile);
+      }
+
+    })
+  }
+ // n : tileWidth * n
+
   function drawObstacles() {
     obstacles.forEach(function(obstacle) {
       var newObstacle = $("<img src='images/Rock.png'></img>");
@@ -72,9 +97,9 @@ function initGame() {
   }
 
   function canMove(deltaX, deltaY) {
-    if(playerX + deltaX < 0 || playerX + deltaX > boardWidth - 1) {
-      return false;
-    }
+    if(playerX + deltaX < 0 || playerX + deltaX > boardWidth - 1) return;
+    if(playerY + deltaY < 0 || playerY + deltaY > boardHeight - 1) return;
+
     var obstacleFound = false;
     obstacles.forEach(function(obstacle) {
       if(obstacle.x == playerX + deltaX && obstacle.y == playerY + deltaY) {
