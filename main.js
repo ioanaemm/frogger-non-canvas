@@ -45,7 +45,7 @@ function initGame() {
         var newTile = $("<img src='images/" + tileType + "-block.png'>");
         newTile.css({
           "position": "absolute",
-          "top": tileHeight * rowIndex + "px",
+          "top": tileHeight * rowIndex + 34 + "px",
           "left": tileWidth * i + "px",
           "z-index": -1
         });
@@ -54,7 +54,6 @@ function initGame() {
 
     })
   }
- // n : tileWidth * n
 
   function drawObstacles() {
     obstacles.forEach(function(obstacle) {
