@@ -1,6 +1,7 @@
 $(document).ready(initGame);
 
 function initGame() {
+  console.log(levels);
   var playerX = 0;
   var playerY = 0;
   var tileWidth = 101;
@@ -8,15 +9,14 @@ function initGame() {
   var tileImageHeight = 171;
   var boardWidth = 5;
   var boardHeight = 6;
-  var obstacles = [{x: 1, y: 1},{x: 2, y: 2},{x: 3, y: 3},{x: 4, y: 4}];
-  var gems = [{ x: 2, y: 3}, {x: 3, y: 4}];
   var score = 0;
 
   var rows = [
     "water", "stone", "stone", "stone", "stone", "grass"
   ];
 
-  var targetScore = 1;
+  var crtLevel = 0;
+
 
   $(window).keypress(onKeyPress);
   function onKeyPress(event) {
@@ -59,7 +59,7 @@ function initGame() {
   }
 
   function drawObstacles() {
-    obstacles.forEach(function(obstacle) {
+    levels[crtLevel].obstacles.forEach(function(obstacle) {
       var newObstacle = $("<img src='images/Rock.png'></img>");
       newObstacle.css({
         left: (tileWidth * obstacle.x) + 'px',
@@ -71,7 +71,7 @@ function initGame() {
   }
 
   function drawGems() {
-    gems.forEach(function(gem, index){
+    levels[crtLevel].gems.forEach(function(gem, index){
       var newGem = $('<img id = "gem' + index + '" src="images/Gem_Orange.png"></img>');
       newGem.css({
         left: (tileWidth * gem.x) + "px",
@@ -82,7 +82,7 @@ function initGame() {
     });
   }
 
-  
+
   function move(deltaX, deltaY) {
     if(canMove(deltaX, deltaY)) {
       playerX += deltaX;
@@ -93,10 +93,10 @@ function initGame() {
 
 
   function checkIfCollectGem() {
-    for(var i = 0; i < gems.length; i++) {
-      if(gems[i].x == playerX && gems[i].y == playerY && !gems[i].taken) {
+    for(var i = 0; i < levels[crtLevel].gems.length; i++) {
+      if(levels[crtLevel].gems[i].x == playerX && levels[crtLevel].gems[i].y == playerY && !levels[crtLevel].gems[i].taken) {
         $("#gem"+i).remove();
-        gems[i].taken = true;
+        levels[crtLevel].gems[i].taken = true;
         score++;
         openGate();
       }
@@ -105,7 +105,7 @@ function initGame() {
 
 
   function openGate() {
-    if(targetScore === score) {
+    if(levels[crtLevel].scoreRequired === score) {
       console.log("gate works");
       var gate = $("<img src='images/gate.png'>");
       gate.css({
@@ -124,7 +124,7 @@ function initGame() {
     if(playerY + deltaY < 0 || playerY + deltaY > boardHeight - 1) return;
 
     var obstacleFound = false;
-    obstacles.forEach(function(obstacle) {
+    levels[crtLevel].obstacles.forEach(function(obstacle) {
       if(obstacle.x == playerX + deltaX && obstacle.y == playerY + deltaY) {
         obstacleFound = true;
       }

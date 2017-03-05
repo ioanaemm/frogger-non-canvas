@@ -1,6 +1,6 @@
-[
+var levels = [
   {
-    "score-required": 1,
+    "scoreRequired": 1,
     "obstacles": [],
     "gems": [{"x": 2, "y": 3}],
     "enemies": [
@@ -13,7 +13,7 @@
     ],
   },
   {
-    "score-required": 3,
+    "scoreRequired": 3,
     "obstacles": [{"x": 1, "y": 1},{"x": 2, "y": 2},{"x": 3, "y": 3},{"x": 4, "y": 4}],
     "gems": [{"x": 1, "y": 3}, {"x": 3, "y": 4}],
     "enemies": [
@@ -31,4 +31,4 @@
       }
     ]
   }
-]
+];
