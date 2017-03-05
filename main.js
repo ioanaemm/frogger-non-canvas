@@ -36,6 +36,7 @@ function initGame() {
   drawTiles();
   drawObstacles();
   drawGems();
+  openGate();
 
 
 
@@ -92,6 +93,17 @@ function initGame() {
       }
     }
     console.log(score);
+
+  }
+
+  function openGate() {
+    var gate = $("<img src='images/gate.png'>");
+    gate.css({
+      "position": "absolute",
+      "left": Math.round(Math.random() * 4) * tileWidth + "px",
+      "top": -5 + "px"
+    });
+    $('body').append(gate);
 
   }
 
