@@ -85,8 +85,9 @@ function initGame() {
   }
 
   function drawEnemies() {
-    levels[crtLevel].enemies.forEach(function (enemy){
-      var newEnemy = $('<img src="images/enemy-bug.png">');
+    levels[crtLevel].enemies.forEach(function (enemy, index){
+      var newEnemy = $('<img id="bug' + index + '" src="images/enemy-bug.png">');
+      console.log(newEnemy);
       newEnemy.css({
         "position": "absolute",
         "left": (tileWidth * enemy.x) + "px",
@@ -95,6 +96,27 @@ function initGame() {
       $('body').append(newEnemy);
     });
   }
+
+  var interval = setInterval(updateBugs, 10);
+
+  function updateBugs(){
+    levels[crtLevel].enemies.forEach(function(enemyObj, index){
+      var crtEnemy = $("#bug"+index);
+      var crtLeft = parseInt(crtEnemy.css('left'));
+      var newLeft = (crtLeft + enemyObj.speedX) + 'px';
+      crtEnemy.css('left', newLeft);
+    });
+  }
+
+  //speed = distance / time
+  //you have the speed
+  //but you need to apply it
+  //aka to generate the distance
+  //in order to do that, you need time
+  //aka to apply that speed periodically
+
+
+
 
   function move(deltaX, deltaY) {
     if(canMove(deltaX, deltaY)) {
@@ -156,6 +178,17 @@ function initGame() {
     })
     return !obstacleFound;
   }
+
+  /*function detectCollision(){
+    var collision = false;
+    levels[crtLevel].enemies.forEach(function(enemy) {
+      if(enemy.x === playerX && enemy.y === playerY) {
+        collision = true;
+
+      }
+    });
+  }*/
+
 
   requestAnimationFrame(update);
   function update() {

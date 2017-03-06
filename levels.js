@@ -5,9 +5,9 @@ var levels = [
     "gems": [{"x": 2, "y": 3}],
     "enemies": [
       {
-        "x": -1,
+        "x": 0,
         "y": 2,
-        "speedX": 10,
+        "speedX": 2,
         "speedY": 0,
       }
     ],
@@ -45,8 +45,8 @@ var levels = [
       {
         "x": 6,
         "y": 4,
-        "speed-x": -10,
-        "speed-y": 0,
+        "speedX": -10,
+        "speedY": 0,
       }
     ]
   }
