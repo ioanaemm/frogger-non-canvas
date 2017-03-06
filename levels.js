@@ -7,8 +7,8 @@ var levels = [
       {
         "x": -1,
         "y": 2,
-        "speed-x": 10,
-        "speed-y": 0,
+        "speedX": 10,
+        "speedY": 0,
       }
     ],
   },
@@ -20,14 +20,14 @@ var levels = [
       {
         "x": -1,
         "y": 2,
-        "speed-x": 10,
-        "speed-y": 0,
+        "speedX": 10,
+        "speedY": 0,
       },
       {
         "x": 6,
         "y": 4,
-        "speed-x": -10,
-        "speed-y": 0,
+        "speedX": -10,
+        "speedY": 0,
       }
     ]
   },
@@ -39,8 +39,8 @@ var levels = [
       {
         "x": -1,
         "y": 2,
-        "speed-x": 10,
-        "speed-y": 0,
+        "speedX": 10,
+        "speedY": 0,
       },
       {
         "x": 6,

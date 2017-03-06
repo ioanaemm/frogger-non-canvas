@@ -2,8 +2,8 @@ $(document).ready(initGame);
 
 function initGame() {
   console.log(levels);
-  var playerX = 0;
-  var playerY = 0;
+  var playerX = 2;
+  var playerY = 5;
   var tileWidth = 101;
   var tileHeight = 83;
   var tileImageHeight = 171;
@@ -12,7 +12,7 @@ function initGame() {
   var score = 0;
 
   var rows = [
-    "water", "stone", "stone", "stone", "stone", "grass"
+    "water", "stone", "stone", "stone", "grass", "grass"
   ];
 
   var crtLevel = 0;
@@ -39,6 +39,7 @@ function initGame() {
   drawTiles();
   drawObstacles();
   drawGems();
+  drawEnemies();
 
 
 
@@ -61,7 +62,7 @@ function initGame() {
 
   function drawObstacles() {
     levels[crtLevel].obstacles.forEach(function(obstacle) {
-      var newObstacle = $("<img class='element' src='images/Rock.png'></img>");
+      var newObstacle = $("<img class='element' src='images/Rock.png'>");
       newObstacle.css({
         left: (tileWidth * obstacle.x) + 'px',
         top: (tileHeight * obstacle.y) + 'px',
@@ -73,7 +74,7 @@ function initGame() {
 
   function drawGems() {
     levels[crtLevel].gems.forEach(function(gem, index){
-      var newGem = $('<img class="element" id = "gem' + index + '" src="images/Gem_Orange.png"></img>');
+      var newGem = $('<img class="element" id = "gem' + index + '" src="images/Gem_Orange.png">');
       newGem.css({
         left: (tileWidth * gem.x) + "px",
         top: (tileHeight * gem.y) + "px",
@@ -83,6 +84,17 @@ function initGame() {
     });
   }
 
+  function drawEnemies() {
+    levels[crtLevel].enemies.forEach(function (enemy){
+      var newEnemy = $('<img src="images/enemy-bug.png">');
+      newEnemy.css({
+        "position": "absolute",
+        "left": (tileWidth * enemy.x) + "px",
+        "top": (tileHeight * enemy.y) + "px"
+      });
+      $('body').append(newEnemy);
+    });
+  }
 
   function move(deltaX, deltaY) {
     if(canMove(deltaX, deltaY)) {
