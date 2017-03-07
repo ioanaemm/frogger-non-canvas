@@ -87,7 +87,6 @@ function initGame() {
   function drawEnemies() {
     levels[crtLevel].enemies.forEach(function (enemy, index){
       var newEnemy = $('<img id="bug' + index + '" src="images/enemy-bug.png">');
-      console.log(newEnemy);
       newEnemy.css({
         "position": "absolute",
         "left": (tileWidth * enemy.x) + "px",
@@ -105,18 +104,16 @@ function initGame() {
       var crtLeft = parseInt(crtEnemy.css('left'));
       var newLeft = (crtLeft + enemyObj.speedX) + 'px';
       crtEnemy.css('left', newLeft);
+      setLimitForBug(index);
     });
+    detectCollision();
   }
 
-  //speed = distance / time
-  //you have the speed
-  //but you need to apply it
-  //aka to generate the distance
-  //in order to do that, you need time
-  //aka to apply that speed periodically
-
-
-
+  function setLimitForBug(index) {
+    if(parseInt($('#bug'+index).css('left')) > boardWidth * tileWidth) {
+      $('#bug' + index).css('left', levels[crtLevel].enemies[index].x * tileWidth + "px");
+    }
+  }
 
   function move(deltaX, deltaY) {
     if(canMove(deltaX, deltaY)) {
@@ -179,15 +176,18 @@ function initGame() {
     return !obstacleFound;
   }
 
-  /*function detectCollision(){
-    var collision = false;
-    levels[crtLevel].enemies.forEach(function(enemy) {
-      if(enemy.x === playerX && enemy.y === playerY) {
-        collision = true;
-
+  function detectCollision(){
+    levels[crtLevel].enemies.forEach(function(enemy, index) {
+      var bugLeft = parseInt($("#bug"+index).css("left"));
+      var bugWidth = $("#bug"+index).width();
+      var playerLeft = parseInt($("#player").css("left"));
+      var playerWidth = $("#player").width();
+      if(enemy.y === playerY && bugLeft < playerLeft + playerWidth && bugLeft + bugWidth > playerLeft) {
+          playerX = 2;
+          playerY = 5;
       }
     });
-  }*/
+  }
 
 
   requestAnimationFrame(update);
