@@ -2,11 +2,11 @@ var levels = [
   {
     "scoreRequired": 1,
     "obstacles": [],
-    "gems": [{"x": 2, "y": 3}],
+    "gems": [{"tileX": 2, "tileY": 3}],
     "enemies": [
       {
-        "x": 0,
-        "y": 2,
+        "initialTileX": 0,
+        "initialTileY": 2,
         "speedX": 2,
         "speedY": 0,
       }
@@ -14,18 +14,18 @@ var levels = [
   },
   {
     "scoreRequired": 2,
-    "obstacles": [{"x": 1, "y": 1},{"x": 2, "y": 2},{"x": 3, "y": 3},{"x": 4, "y": 4}],
-    "gems": [{"x": 1, "y": 3}, {"x": 3, "y": 4}],
+    "obstacles": [{"tileX": 1, "tileY": 1},{"tileX": 2, "tileY": 2},{"tileX": 3, "tileY": 3},{"tileX": 4, "tileY": 4}],
+    "gems": [{"tileX": 1, "tileY": 3}, {"tileX": 3, "tileY": 4}],
     "enemies": [
       {
-        "x": -1,
-        "y": 2,
+        "initialTileX": -1,
+        "initialTileY": 1,
         "speedX": 10,
         "speedY": 0,
       },
       {
-        "x": 6,
-        "y": 4,
+        "initialTileX": 6,
+        "initialTileY": 4,
         "speedX": -10,
         "speedY": 0,
       }
@@ -33,18 +33,18 @@ var levels = [
   },
   {
     "scoreRequired": 1,
-    "obstacles": [{"x": 1, "y": 1},{"x": 3, "y": 3}],
-    "gems": [{"x": 1, "y": 3}],
+    "obstacles": [{"tileX": 1, "tileY": 1},{"tileX": 3, "tileY": 3}],
+    "gems": [{"tileX": 1, "tileY": 3}],
     "enemies": [
       {
-        "x": -1,
-        "y": 2,
+        "initialTileX": -1,
+        "initialTileY": 2,
         "speedX": 10,
         "speedY": 0,
       },
       {
-        "x": 6,
-        "y": 4,
+        "initialTileX": 6,
+        "initialTileY": 4,
         "speedX": -10,
         "speedY": 0,
       }
