@@ -5,9 +5,15 @@ var levels = [
     "gems": [{"tileX": 2, "tileY": 3}],
     "enemies": [
       {
-        "initialTileX": 0,
+        "initialTileX": 8,
         "initialTileY": 2,
-        "speedX": 2,
+        "speedX": -4,
+        "speedY": 0,
+      },
+      {
+        "initialTileX": -1,
+        "initialTileY": 3,
+        "speedX": 4,
         "speedY": 0,
       }
     ],
@@ -18,18 +24,24 @@ var levels = [
     "gems": [{"tileX": 1, "tileY": 3}, {"tileX": 3, "tileY": 4}],
     "enemies": [
       {
-        "initialTileX": -1,
-        "initialTileY": 1,
-        "speedX": 10,
+        "initialTileX": 8,
+        "initialTileY": 2,
+        "speedX": -4,
         "speedY": 0,
       },
       {
-        "initialTileX": 6,
-        "initialTileY": 4,
-        "speedX": -10,
+        "initialTileX": -1,
+        "initialTileY": 3,
+        "speedX": 4,
+        "speedY": 0,
+      },
+      {
+        "initialTileX": -3,
+        "initialTileY": 3,
+        "speedX": 10,
         "speedY": 0,
       }
-    ]
+    ],
   },
   {
     "scoreRequired": 1,
@@ -43,8 +55,8 @@ var levels = [
         "speedY": 0,
       },
       {
-        "initialTileX": 6,
-        "initialTileY": 4,
+        "initialTileX": 9,
+        "initialTileY": 3,
         "speedX": -10,
         "speedY": 0,
       }

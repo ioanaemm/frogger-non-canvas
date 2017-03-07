@@ -19,19 +19,27 @@
         left: 400px;
         top: 25px;
       }
+      #game {
+        width: 810px;
+        height: 620px;
+        overflow: hidden;
+        position: relative
+      }
     </style>
   </head>
   <body>
-    <div class="lives"> </div>
-    <!--<div class="win-game">
-      <h2> Congratulations! You've won the game!  </h2>
-      <h4> Your score was: 200gems! </h4>
-    </div>-->
-    
+    <div id="game">
+      <div class="lives"> </div>
+      <!--<div class="win-game">
+        <h2> Congratulations! You've won the game!  </h2>
+        <h4> Your score was: 200gems! </h4>
+      </div>-->
+      <img id="player" src="images/player.png"></img>
+    </div>
     <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
     <script src="levels.js"></script>
     <script src="main.js"></script>
-    <img id="player" src="images/player.png"></img>
+
 
   </body>
 </html>

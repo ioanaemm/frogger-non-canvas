@@ -1,15 +1,15 @@
 $(document).ready(initGame);
 
 function initGame() {
-  console.log(levels);
   var playerTileX = 2;
   var playerTileY = 5;
   var tileWidth = 101;
   var tileHeight = 83;
   var tileImageHeight = 171;
-  var boardWidth = 5;
+  var boardWidth = 8;
   var boardHeight = 6;
   var score = 0;
+  var game = $('#game');
 
   var rows = [
     "water", "stone", "stone", "stone", "grass", "grass"
@@ -37,12 +37,7 @@ function initGame() {
     }
   }
   drawTiles();
-  drawObstacles();
-  drawGems();
-  drawEnemies();
-
-
-
+  startLevel();
 
   function drawTiles() {
     rows.forEach(function(tileType, rowIndex){
@@ -54,7 +49,7 @@ function initGame() {
           "left": tileWidth * i + "px",
           "z-index": -1
         });
-        $('body').append(newTile);
+        game.append(newTile);
       }
     })
   }
@@ -67,7 +62,7 @@ function initGame() {
         top: (tileHeight * obstacle.tileY) + 'px',
         position: 'absolute'
       })
-      $('body').append(newObstacle);
+      game.append(newObstacle);
     })
   }
 
@@ -79,24 +74,25 @@ function initGame() {
         top: (tileHeight * gem.tileY) + "px",
         position: 'absolute'
       });
-      $('body').append(newGem);
+      game.append(newGem);
     });
   }
 
   function drawEnemies() {
     levels[crtLevel].enemies.forEach(function (enemy, index){
-      var newEnemy = $('<img id="bug' + index + '" src="images/enemy-bug.png">');
+      var newEnemy = $('<img class="element" id="bug' + index + '" src="images/enemy-bug.png">');
+      var scaleX = (enemy.speedX > 0) ? 1 : -1
       newEnemy.css({
         "position": "absolute",
         "left": (tileWidth * enemy.initialTileX) + "px",
-        "top": (tileHeight * enemy.initialTileY) + "px"
+        "top": (tileHeight * enemy.initialTileY) + "px",
+        "transform": "scaleX(" + scaleX +")"
       });
-
-      $('body').append(newEnemy);
+      game.append(newEnemy);
     });
   }
 
-  var interval = setInterval(updateBugs, 100);
+  var interval = setInterval(updateBugs, 20);
 
   function updateBugs(){
     levels[crtLevel].enemies.forEach(function(enemyObj, index){
@@ -104,16 +100,41 @@ function initGame() {
       var crtLeft = parseInt(crtEnemy.css('left'));
       var newLeft = (crtLeft + enemyObj.speedX) + 'px';
       crtEnemy.css('left', newLeft);
-      setLimitForBug(index);
+      setLimitForBug(enemyObj, index);
     });
     detectCollision();
 
   }
 
-  function setLimitForBug(index) {
-    if(parseInt($('#bug'+index).css('left')) > boardWidth * tileWidth) {
-      $('#bug' + index).css('left', levels[crtLevel].enemies[index].initialTileX * tileWidth + "px");
+  function setLimitForBug(enemyObj, index) {
+    var bugLeft = parseInt($('#bug'+index).css('left'));
+    var bugWidth = $('#bug'+index).width();
+    var gameWidth = boardWidth * tileWidth;
+    if( (enemyObj.speedX > 0 && bugLeft > gameWidth) ||
+        (enemyObj.speedX < 0 && bugLeft < -bugWidth)
+    ) {
+      $('#bug' + index).css('left', enemyObj.initialTileX * tileWidth + "px");
     }
+  }
+
+  function detectCollision() {
+    levels[crtLevel].enemies.forEach(function(enemy, index) {
+      var bugLeft = parseInt($("#bug"+index).css("left"));
+      //console.log("this is the css left property of " +bugLeft);
+      var bugWidth = $("#bug"+index).width();
+      var playerLeft = parseInt($("#player").css("left"));
+      //console.log("this is the css left property of " + playerLeft);
+      var playerWidth = $("#player").width();
+      //console.log("this is the width property of player " + playerWidth);
+      if(enemy.initialTileY === playerTileY &&
+        bugLeft < playerLeft + playerWidth &&
+        bugLeft + bugWidth > playerLeft
+      ) {
+          playerTileX = 2;
+          playerTileY = 5;
+          $("#heartImg").last().remove();
+      }
+    });
   }
 
   function move(deltaX, deltaY) {
@@ -141,6 +162,7 @@ function initGame() {
     $("#gem"+index).remove();
     gem.taken = true;
     score++;
+    updateScore();
     maybeOpenGate();
   }
 
@@ -158,20 +180,36 @@ function initGame() {
       "left": gateX * tileWidth + "px",
       "top": -5 + "px"
     });
-    $('body').append(gate);
+    game.append(gate);
   }
 
   function checkIfOnGate() {
     if(gateX === playerTileX && playerTileY === 0 && levels[crtLevel].scoreRequired === score) {
-      $(".element").remove();
       if(levels[crtLevel+1]) {
-        score = 0;
-        crtLevel++;
-        drawGems();
-        drawObstacles();
+        goToNextLevel();
       }
-
     }
+  }
+
+  function goToNextLevel() {
+    console.log('goToNextLevel()');
+    crtLevel++;
+    startLevel();
+  }
+
+  function startLevel() {
+    $(".element").remove();
+    score = 0;
+    playerTileX = 2;
+    playerTileY = 5;
+    drawGems();
+    drawObstacles();
+    drawEnemies();
+    updateScore();
+  }
+
+  function updateScore() {
+    $("#current_score").text("Score: " + score);
   }
 
   function canMove(deltaX, deltaY) {
@@ -187,41 +225,23 @@ function initGame() {
     return !obstacleFound;
   }
 
-  function detectCollision() {
-    levels[crtLevel].enemies.forEach(function(enemy, index) {
-      var bugLeft = parseInt($("#bug"+index).css("left"));
-      //console.log("this is the css left property of " +bugLeft);
-      var bugWidth = $("#bug"+index).width();
-      var playerLeft = parseInt($("#player").css("left"));
-      //console.log("this is the css left property of " + playerLeft);
-      var playerWidth = $("#player").width();
-      //console.log("this is the width property of player " + playerWidth);
-      if(enemy.initialTileY === playerTileY &&
-        bugLeft < playerLeft + playerWidth &&
-        bugLeft + bugWidth > playerLeft
-      ) {
-          playerTileX = 2;
-          playerTileY = 5;
-      }
-    });
-  }
+
   function showLives() {
     for(var i = 0; i < numberOfLives; i++) {
-      var newLife = $("<img src='images/rsz_heart.png'>");
+      var newLife = $("<img id='heartImg' src='images/rsz_heart.png'>");
       newLife.css("margin", "5px");
-      $('.lives').append(newLife);
+      game.find('.lives').append(newLife);
     }
   }
 
   showLives();
 
   function showScore() {
-    var crtScore = $("body").append('<h2>Score:' + score + '</h2>');
-    crtScore.css({
+    game.append('<h2 id="current_score"> Score:' + score + '</h2>');
+    game.find('#current_score').css({
       "line-height": "50px",
       "color": "red"
     });
-
   }
   showScore();
 
