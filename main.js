@@ -1,15 +1,19 @@
 $(document).ready(initGame);
 
 function initGame() {
-  var playerTileX = 2;
-  var playerTileY = 5;
+  var playerTileX = 0;
+  var playerTileY = 0;
+  var initialPlayerTileX = 2;
+  var initialPlayerTileY = 5;
   var tileWidth = 101;
   var tileHeight = 83;
   var tileImageHeight = 171;
   var boardWidth = 8;
   var boardHeight = 6;
   var score = 0;
+  var updateBugsInterval;
   var game = $('#game');
+
 
   var rows = [
     "water", "stone", "stone", "stone", "grass", "grass"
@@ -19,26 +23,36 @@ function initGame() {
   var gateX = Math.round(Math.random() * 4);
   var numberOfLives = 3;
 
-  $(window).keypress(onKeyPress);
-  function onKeyPress(event) {
-    switch(event.key) {
-      case "s":
+  $(window).keydown(onKeyDown);
+  function onKeyDown(event) {
+    switch(event.which) {
+      case 40:
         move(0,1);
         break;
-      case "w":
+      case 38:
         move(0,-1);
         break;
-      case "a":
+      case 37:
         move(-1,0);
         break;
-      case "d":
+      case 39:
         move(1,0);
         break;
     }
   }
-  drawTiles();
-  startLevel();
+  startGame();
+  function startGame() {
+    $(".game_lost").hide();
+    crtLevel = 0;
+    numberOfLives = 3;
+    drawTiles();
+    startLevel();
+    drawLives();
+  }
 
+
+
+// functions for drawing elements on the screen
   function drawTiles() {
     rows.forEach(function(tileType, rowIndex){
       for(var i = 0; i < boardWidth; i++) {
@@ -54,6 +68,12 @@ function initGame() {
     })
   }
 
+  function drawPlayer() {
+    var newPlayer = $("<img class='element' id='player' src='images/player.png'>");
+    game.append(newPlayer);
+  }
+
+
   function drawObstacles() {
     levels[crtLevel].obstacles.forEach(function(obstacle) {
       var newObstacle = $("<img class='element' src='images/Rock.png'>");
@@ -68,15 +88,31 @@ function initGame() {
 
   function drawGems() {
     levels[crtLevel].gems.forEach(function(gem, index){
-      var newGem = $('<img class="element" id = "gem' + index + '" src="images/Gem_Orange.png">');
+      var newGem = $('<img class="element" id = "gem' + index + '" src="images/rsz_gem_orange.png">');
       newGem.css({
-        left: (tileWidth * gem.tileX) + "px",
-        top: (tileHeight * gem.tileY) + "px",
+        left: (tileWidth * gem.tileX + 25)  + "px",
+        top: (tileHeight * gem.tileY + 65)  +"px",
         position: 'absolute'
       });
       game.append(newGem);
     });
   }
+
+  // lives on screen
+  function drawLives() {
+    for(var i = 0; i < numberOfLives; i++) {
+      var newLife = $("<img id='heartImg' src='images/rsz_heart.png'>");
+      newLife.css("margin", "5px");
+      game.find('.lives').append(newLife);
+    }
+  }
+
+  // score on screen
+  function drawScore() {
+    game.append('<h2 id="current_score"> Score:' + score + '</h2>');
+
+  }
+  drawScore();
 
   function drawEnemies() {
     levels[crtLevel].enemies.forEach(function (enemy, index){
@@ -92,8 +128,6 @@ function initGame() {
     });
   }
 
-  var interval = setInterval(updateBugs, 20);
-
   function updateBugs(){
     levels[crtLevel].enemies.forEach(function(enemyObj, index){
       var crtEnemy = $("#bug"+index);
@@ -103,7 +137,6 @@ function initGame() {
       setLimitForBug(enemyObj, index);
     });
     detectCollision();
-
   }
 
   function setLimitForBug(enemyObj, index) {
@@ -130,13 +163,30 @@ function initGame() {
         bugLeft < playerLeft + playerWidth &&
         bugLeft + bugWidth > playerLeft
       ) {
-          playerTileX = 2;
-          playerTileY = 5;
+          playerTileX = initialPlayerTileX;
+          playerTileY = initialPlayerTileY;
+          numberOfLives--;
+          console.log(numberOfLives);
           $("#heartImg").last().remove();
+          checkGameOver();
       }
     });
   }
 
+  function checkGameOver() {
+    if(numberOfLives <= 0) {
+      $(".game_lost").show();
+    }
+  }
+
+  $(".game_lost button#yes").click(function(){
+    console.log("button ok");
+    startGame();
+    console.log("button not ok");
+  });
+
+
+ //  logic for player
   function move(deltaX, deltaY) {
     if(canMove(deltaX, deltaY)) {
       playerTileX += deltaX;
@@ -146,7 +196,20 @@ function initGame() {
     checkIfOnGate();
   }
 
+  function canMove(deltaX, deltaY) {
+    if(playerTileX + deltaX < 0 || playerTileX + deltaX > boardWidth - 1) return;
+    if(playerTileY + deltaY < 0 || playerTileY + deltaY > boardHeight - 1) return;
 
+    var obstacleFound = false;
+    levels[crtLevel].obstacles.forEach(function(obstacle) {
+      if(obstacle.tileX == playerTileX + deltaX && obstacle.tileY == playerTileY + deltaY) {
+        obstacleFound = true;
+      }
+    })
+    return !obstacleFound;
+  }
+
+  // logic for gems and open gate after collecting them
   function checkIfCollectGem() {
     levels[crtLevel].gems.forEach(function(gem, index){
       if(gem.tileX == playerTileX &&
@@ -166,8 +229,9 @@ function initGame() {
     maybeOpenGate();
   }
 
+
   function maybeOpenGate() {
-    if(levels[crtLevel].scoreRequired === score) {
+    if(levels[crtLevel].gems.length === score) {
       openGate();
     }
   }
@@ -184,15 +248,17 @@ function initGame() {
   }
 
   function checkIfOnGate() {
-    if(gateX === playerTileX && playerTileY === 0 && levels[crtLevel].scoreRequired === score) {
+    if(gateX === playerTileX && playerTileY === 0 && levels[crtLevel].gems.length === score) {
       if(levels[crtLevel+1]) {
         goToNextLevel();
+      } else {
+        $(".game_won").show();
       }
     }
   }
 
+// game
   function goToNextLevel() {
-    console.log('goToNextLevel()');
     crtLevel++;
     startLevel();
   }
@@ -200,50 +266,23 @@ function initGame() {
   function startLevel() {
     $(".element").remove();
     score = 0;
-    playerTileX = 2;
-    playerTileY = 5;
+    $("#current_level").text("Level: " + crtLevel);
+    playerTileX = initialPlayerTileX;
+    playerTileY = initialPlayerTileY;
     drawGems();
     drawObstacles();
     drawEnemies();
     updateScore();
+    drawPlayer();
+    if(updateBugsInterval) clearInterval(updateBugsInterval);
+    updateBugsInterval = setInterval(updateBugs, 30);
   }
 
   function updateScore() {
     $("#current_score").text("Score: " + score);
   }
 
-  function canMove(deltaX, deltaY) {
-    if(playerTileX + deltaX < 0 || playerTileX + deltaX > boardWidth - 1) return;
-    if(playerTileY + deltaY < 0 || playerTileY + deltaY > boardHeight - 1) return;
 
-    var obstacleFound = false;
-    levels[crtLevel].obstacles.forEach(function(obstacle) {
-      if(obstacle.tileX == playerTileX + deltaX && obstacle.tileY == playerTileY + deltaY) {
-        obstacleFound = true;
-      }
-    })
-    return !obstacleFound;
-  }
-
-
-  function showLives() {
-    for(var i = 0; i < numberOfLives; i++) {
-      var newLife = $("<img id='heartImg' src='images/rsz_heart.png'>");
-      newLife.css("margin", "5px");
-      game.find('.lives').append(newLife);
-    }
-  }
-
-  showLives();
-
-  function showScore() {
-    game.append('<h2 id="current_score"> Score:' + score + '</h2>');
-    game.find('#current_score').css({
-      "line-height": "50px",
-      "color": "red"
-    });
-  }
-  showScore();
 
   requestAnimationFrame(update);
   function update() {

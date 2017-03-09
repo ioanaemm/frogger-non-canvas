@@ -1,0 +1,127 @@
+/* IDS */
+
+#player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+#game {
+  font-family: 'Roboto', 'sans-serif';
+  width: 810px;
+  height: 620px;
+  overflow: hidden;
+  position: relative;
+}
+
+#game_over_title {
+  font-family: 'Roboto', 'sans-serif';
+  color: #F3DEAB;
+  font-size: 50px;
+  font-weight: 200;
+  text-align: center;
+  line-height: 150px;
+  margin: 0;
+}
+
+#final_text {
+  color: #ecf0f1;
+  font-size: 30px;
+  text-align: center;
+  line-height: 150px;
+  font-weight: 100;
+}
+
+#final_score {
+  color: #ecf0f1;
+  font-size: 25px;
+  text-align: center;
+  font-weight: 400;
+}
+
+#current_score {
+  font-family: 'Roboto', 'sans-serif';
+  font-weight: 300;
+  position: absolute;
+  left: 30px;
+  top: 25px;
+
+}
+
+#current_level {
+  font-family: 'Roboto', 'sans-serif';
+  font-size: 40px;
+  color: red !important;
+  text-align: center;
+  margin: 0;
+}
+
+#question_subtitle {
+  font-family: 'Roboto', 'sans-serif';
+  color: #FF2452;
+  font-size: 27px;
+  text-align: center;
+  font-weight: 500;
+}
+
+#yes {
+  background-color: #2ecc71;
+  color: #fff;
+  font-family: 'Roboto', 'sans-serif';
+  font-size: 17px;
+  font-weight: 400;
+  border: none;
+  width: 100px;
+  height: 35px;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+#player_game_lost {
+  display: block;
+  margin: auto;
+}
+
+/* HTML TAGS*/
+body {
+  width: 600px;
+  height: 500px;
+}
+
+span {
+  color: #3498db;
+}
+
+/* CLASSES */
+.lives {
+  width: 150px;
+  position: absolute;
+  right: 0px;
+  text-align: right;
+  top: 25px;
+}
+
+.game_won {
+  background-color: #34495e;
+  width: 810px;
+  height: 620px;
+  z-index: 10000;
+  position: relative;
+  display: none;
+}
+
+.game_lost {
+  width: 810px;
+  height: 620px;
+  background-color: #030A04;
+  display: none;
+  z-index: 100000;
+  position: relative;
+}
+
+.wrapper {
+  text-align: center;
+}

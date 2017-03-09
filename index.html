@@ -2,39 +2,25 @@
 
 <html>
   <head>
-    <style>
-      #player {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: block;
-      }
-      body {
-        width: 600px;
-        height: 500px;
-      }
-      .lives {
-        width: 150px;
-        position: absolute;
-        left: 400px;
-        top: 25px;
-      }
-      #game {
-        width: 810px;
-        height: 620px;
-        overflow: hidden;
-        position: relative
-      }
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
   </head>
   <body>
     <div id="game">
+      <h2  id="current_level"> </h2>
       <div class="lives"> </div>
-      <!--<div class="win-game">
-        <h2> Congratulations! You've won the game!  </h2>
-        <h4> Your score was: 200gems! </h4>
-      </div>-->
-      <img id="player" src="images/player.png"></img>
+      <div class="game_won">
+        <h2 id="final_text"> Congratulations! You've won the game!  </h2>
+        <h4 id="final_score"> Your total score was: <span> 2000</span> gems! </h4>
+      </div>
+      <div class="game_lost">
+        <h2 id="game_over_title"> GAME OVER! </h2>
+        <h4 id="question_subtitle"> Do you want to play again? </h4>
+        <div class="wrapper">
+          <button id="yes">YES</button>
+        </div>
+        <img id="player_game_lost" src="images/player.png">
+      </div>
     </div>
     <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
     <script src="levels.js"></script>
