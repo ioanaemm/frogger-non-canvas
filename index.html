@@ -3,11 +3,25 @@
 <html>
   <head>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="main.css" rel="stylesheet">
   </head>
   <body>
+
     <div id="game">
-      <h2  id="current_level"> </h2>
+      <div id="begin_game_screen">
+        <h2 id="choose_player"> Choose your player </h2>
+        <img id="player_image" src="images/char-boy.png">
+        <div class="wrapper">
+          <button id="left"> <i class="fa fa-arrow-left fa-2x" aria-hidden="true"></i> </button>
+          <button id="right"> <i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i> </button>
+        </div>
+        <div class="wrapper">
+          <button id="play"> Play </button>
+        </div>
+      </div>
+      <h2 id="current_score"> </h2>
+      <h2 id="current_level"> </h2>
       <div class="lives"> </div>
       <div class="game_won">
         <h2 id="final_text"> Congratulations! You've won the game!  </h2>
@@ -19,7 +33,7 @@
         <div class="wrapper">
           <button id="yes">YES</button>
         </div>
-        <img id="player_game_lost" src="images/player.png">
+        <img id="player_game_lost">
       </div>
     </div>
     <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>

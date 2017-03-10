@@ -11,6 +11,7 @@ function initGame() {
   var boardWidth = 8;
   var boardHeight = 6;
   var score = 0;
+  var totalScore = 0;
   var updateBugsInterval;
   var game = $('#game');
 
@@ -18,6 +19,14 @@ function initGame() {
   var rows = [
     "water", "stone", "stone", "stone", "grass", "grass"
   ];
+
+  var players = [
+    'images/char-boy.png',
+    'images/char-horn-girl.png',
+    'images/char-pink-girl.png',
+    'images/char-princess-girl.png',
+  ];
+  var playerIndex = 0;
 
   var crtLevel = 0;
   var gateX = Math.round(Math.random() * 4);
@@ -40,9 +49,10 @@ function initGame() {
         break;
     }
   }
-  startGame();
+
   function startGame() {
     $(".game_lost").hide();
+    $("#begin_game_screen").hide();
     crtLevel = 0;
     numberOfLives = 3;
     drawTiles();
@@ -50,6 +60,35 @@ function initGame() {
     drawLives();
   }
 
+
+// you should have an event handler for the arrow buttons
+//and that handler should change the source of the image
+//based on the current index in the array;
+//there should only be one append, in the beginning;
+// and then on each click, navigate through the array by one element in either direction;
+// then read that image (I assume it’s an array of strings containing the paths to the images);
+//and use the current string as the new source for the image element;
+
+
+
+$("button#right").click(function onArrowClicked(){
+  playerIndex++;
+  if(playerIndex > players.length - 1) {
+    playerIndex = 0;
+  }
+  $("#player_image").attr("src", players[playerIndex]);
+});
+$("button#left").click(function onArrowClicked(){
+  playerIndex--;
+  if(playerIndex < 0) {
+    playerIndex = players.length - 1;
+  }
+  $("#player_image").attr("src", players[playerIndex]);
+});
+
+$("#play").click(function () {
+  startGame();
+});
 
 
 // functions for drawing elements on the screen
@@ -69,7 +108,8 @@ function initGame() {
   }
 
   function drawPlayer() {
-    var newPlayer = $("<img class='element' id='player' src='images/player.png'>");
+    var newPlayer = $("<img class='element' id='player'>");
+    newPlayer.attr("src", players[playerIndex]);
     game.append(newPlayer);
   }
 
@@ -107,12 +147,6 @@ function initGame() {
     }
   }
 
-  // score on screen
-  function drawScore() {
-    game.append('<h2 id="current_score"> Score:' + score + '</h2>');
-
-  }
-  drawScore();
 
   function drawEnemies() {
     levels[crtLevel].enemies.forEach(function (enemy, index){
@@ -175,14 +209,13 @@ function initGame() {
 
   function checkGameOver() {
     if(numberOfLives <= 0) {
+      $(".game_lost #player_game_lost").attr("src", players[playerIndex]);
       $(".game_lost").show();
     }
   }
 
   $(".game_lost button#yes").click(function(){
-    console.log("button ok");
     startGame();
-    console.log("button not ok");
   });
 
 
@@ -224,6 +257,7 @@ function initGame() {
   function collectGem(gem, index){
     $("#gem"+index).remove();
     gem.taken = true;
+    totalScore += (crtLevel + 1) * 100;
     score++;
     updateScore();
     maybeOpenGate();
@@ -279,7 +313,7 @@ function initGame() {
   }
 
   function updateScore() {
-    $("#current_score").text("Score: " + score);
+    $("#current_score").text("Score: " + totalScore);
   }
 
 

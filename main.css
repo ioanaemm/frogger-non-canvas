@@ -13,6 +13,7 @@
   height: 620px;
   overflow: hidden;
   position: relative;
+
 }
 
 #game_over_title {
@@ -42,20 +43,24 @@
 
 #current_score {
   font-family: 'Roboto', 'sans-serif';
-  font-weight: 300;
+  font-weight: 400 !important;
   position: absolute;
   left: 30px;
   top: 25px;
+  color: #2c3e50;
 
 }
 
 #current_level {
   font-family: 'Roboto', 'sans-serif';
+  font-weight: 500;
   font-size: 40px;
-  color: red !important;
+  color: #5FC148;
   text-align: center;
   margin: 0;
 }
+
+
 
 #question_subtitle {
   font-family: 'Roboto', 'sans-serif';
@@ -84,6 +89,70 @@
   display: block;
   margin: auto;
 }
+
+#begin_game_screen {
+  width: 810px;
+  height: 620px;
+  background-color: #0B8C73;
+  position: absolute !important;
+  top: 0px !important;
+}
+
+#choose_player {
+  font-family: 'Roboto', 'sans-serif';
+  font-size: 35px;
+  font-weight: 500;
+  color: #BAECE7;
+  text-align: center;
+  padding-top: 40px;
+}
+
+#player_image {
+  display: block;
+  margin: auto;
+  border: 2px solid #BAECE7;
+}
+
+#left, #right {
+  width: 80px;
+  height: 45px;
+  background-color: #06715C;
+  border: none;
+  border-radius: 3px;
+  color: #A3ECDE;
+  font-size: 15px;
+  margin-right: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+#play {
+  width: 120px;
+  height: 45px;
+  font-family: 'Roboto', 'sans-serif';
+  font-size: 25px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  background-color: #287667;
+  color: #BAECE7;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+
+}
+
+#play:hover {
+  background-color: #134037;
+  box-shadow: -5px 5px   8px rgba(165, 191, 186, 0.5);
+  color: #CBEBE5;
+}
+
+/*.button:active {
+  background-color: #134037;
+  box-shadow: 0 3px #001410;
+  transform: translateY(2px);
+}*/
 
 /* HTML TAGS*/
 body {
@@ -124,4 +193,5 @@ span {
 
 .wrapper {
   text-align: center;
+  margin-top: 30px;
 }
