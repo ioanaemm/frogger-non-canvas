@@ -14,7 +14,7 @@ function initGame() {
   var totalScore = 0;
   var updateBugsInterval;
   var game = $('#game');
-
+  var levels;
 
   var rows = [
     "water", "stone", "stone", "stone", "grass", "grass"
@@ -51,6 +51,7 @@ function initGame() {
   }
 
   function startGame() {
+    levels = JSON.parse(JSON.stringify(levelsOrigin));
     $(".game_lost").hide();
     $("#begin_game_screen").hide();
     crtLevel = 0;
@@ -85,6 +86,7 @@ $("button#left").click(function onArrowClicked(){
   }
   $("#player_image").attr("src", players[playerIndex]);
 });
+
 
 $("#play").click(function () {
   startGame();
@@ -128,7 +130,7 @@ $("#play").click(function () {
 
   function drawGems() {
     levels[crtLevel].gems.forEach(function(gem, index){
-      var newGem = $('<img class="element" id = "gem' + index + '" src="images/rsz_gem_orange.png">');
+      var newGem = $('<img class="element hvr-pulse-grow " id = "gem' + index + '" src="images/rsz_gem_orange.png">');
       newGem.css({
         left: (tileWidth * gem.tileX + 25)  + "px",
         top: (tileHeight * gem.tileY + 65)  +"px",
@@ -141,7 +143,7 @@ $("#play").click(function () {
   // lives on screen
   function drawLives() {
     for(var i = 0; i < numberOfLives; i++) {
-      var newLife = $("<img id='heartImg' src='images/rsz_heart.png'>");
+      var newLife = $("<img class='heart' src='images/rsz_heart.png'>");
       newLife.css("margin", "5px");
       game.find('.lives').append(newLife);
     }
@@ -199,10 +201,12 @@ $("#play").click(function () {
       ) {
           playerTileX = initialPlayerTileX;
           playerTileY = initialPlayerTileY;
-          numberOfLives--;
-          console.log(numberOfLives);
-          $("#heartImg").last().remove();
           checkGameOver();
+          numberOfLives--;
+          TweenMax.to($(".heart").first(), 0.2, {scaleX:1.2, scaleY: 1.2, ease: Strong.easeInOut});
+          TweenMax.to($(".heart").first(), 0.4, {scaleX:0, scaleY: 0, ease: Strong.easeInOut, delay: 0.2, onComplete: function() {
+            $(".heart").first().remove();
+          }});
       }
     });
   }
@@ -249,6 +253,7 @@ $("#play").click(function () {
         gem.tileY == playerTileY &&
         !gem.taken
       ) {
+        console.log('collect gem');
         collectGem(gem, index);
       }
     });
@@ -286,6 +291,7 @@ $("#play").click(function () {
       if(levels[crtLevel+1]) {
         goToNextLevel();
       } else {
+        $(".game_won #total_score").text(totalScore);
         $(".game_won").show();
       }
     }
