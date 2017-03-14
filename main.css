@@ -5,6 +5,8 @@
   top: 0;
   left: 0;
   display: block;
+  -webkit-transition: top 300ms, left 300ms;
+  transition: top 300ms, left 300ms;
 }
 
 #game {

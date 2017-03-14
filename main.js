@@ -136,6 +136,10 @@ $("#play").click(function () {
 
   function drawPlayer() {
     var newPlayer = $("<img class='element' id='player'>");
+    newPlayer.css({
+      left: (tileWidth * playerTileX) + 'px',
+      top: (tileHeight * playerTileY) + 'px'
+    });
     newPlayer.attr("src", players[playerIndex]);
     game.append(newPlayer);
   }
