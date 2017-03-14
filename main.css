@@ -182,6 +182,7 @@ span {
   position: relative;
   display: none;
   margin-top: -20px;
+  visibility: hidden;
 }
 
 .game_lost {
@@ -191,6 +192,7 @@ span {
   display: none;
   z-index: 100000;
   position: relative;
+  visibility: hidden;
 }
 
 .wrapper {

@@ -56,6 +56,13 @@ function initGame() {
       return;
     }
 
+    if($(".game_lost").css('display') != 'none') {
+      if(keycode == 13) {
+        startGame();
+      }
+      return;
+    }
+
 
 
 
@@ -165,7 +172,8 @@ $("#play").click(function () {
         top: (tileHeight * gem.tileY + 65)  +"px",
         position: 'absolute'
       });
-      TweenMax.to(newGem, 2, {opacity: 1});
+      //TweenMax.set(newGem, {autoAlpha: 0, scaleX: 0, scaleY: 0});
+      //TweenMax.to(newGem, 1.8, {autoAlpha: 1, scaleX: 1, scaleY: 1, ease: Back.easeOut});
       game.append(newGem);
     });
   }
@@ -246,13 +254,19 @@ $("#play").click(function () {
     if(numberOfLives <= 0) {
       console.log('checkGameOver() should work');
       $(".game_lost #player_game_lost").attr("src", players[playerIndex]);
-      $(".game_lost").show();
+      //TweenMax.from($(".game_lost").show(), 0.8, {autoAlpha: 0});
+      $(".game_lost").css('display', 'block');
+      TweenMax.set($(".game_lost"),{autoAlpha:0});
+      // animate CSS autoAlpha to 1
+      TweenMax.to($(".game_lost"), 0.3, {autoAlpha: 1});
+
     }
   }
 
   $(".game_lost button#yes").click(function(){
     startGame();
   });
+
 
 
  //  logic for player
@@ -315,6 +329,9 @@ $("#play").click(function () {
       "left": gateX * tileWidth + "px",
       "top": -5 + "px"
     });
+    TweenMax.set(gate, {autoAlpha: 0});
+    TweenMax.to(gate, 2, {autoAlpha: 1, ease: Bounce.easeOut});
+    TweenMax.to(gate, 0.6, {scaleX: 0.9, scaleY: 0.9, transformOrigin: "50% 80%", yoyo:true, repeat: 10000});
     game.append(gate);
   }
 
@@ -324,7 +341,8 @@ $("#play").click(function () {
         goToNextLevel();
       } else {
         $(".game_won #total_score").text(totalScore);
-        $(".game_won").show();
+        $(".game_won").css("display", "block");
+        TweenMax.to($(".game_won"), 0.3, {autoAlpha: 1});
       }
     }
   }

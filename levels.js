@@ -1,7 +1,7 @@
 var levelsOrigin = [
   {
     "obstacles": [],
-    "gems": [{"tileX": 2, "tileY": 2},{"tileX": 5, "tileY": 2}],
+    "gems": [{"tileX": 2, "tileY": 2}/*,{"tileX": 5, "tileY": 2}*/],
     "enemies": [
       {
         "initialTileX": 8,
