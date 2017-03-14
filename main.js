@@ -34,6 +34,31 @@ function initGame() {
 
   $(window).keydown(onKeyDown);
   function onKeyDown(event) {
+    var keycode = event.which;
+    if($('#begin_game_screen').css('display') != 'none'){
+      if(keycode == 13) {
+        startGame();
+      }
+      if(keycode == 37) {
+        playerIndex--;
+        if(playerIndex < 0) {
+          playerIndex = players.length - 1;
+        }
+        $("#player_image").attr("src", players[playerIndex]);
+      }
+      if(keycode == 39) {
+        playerIndex++;
+        if(playerIndex > players.length - 1) {
+          playerIndex = 0;
+        }
+        $("#player_image").attr("src", players[playerIndex]);
+      }
+      return;
+    }
+
+
+
+
     switch(event.which) {
       case 40:
         move(0,1);
@@ -136,6 +161,7 @@ $("#play").click(function () {
         top: (tileHeight * gem.tileY + 65)  +"px",
         position: 'absolute'
       });
+      TweenMax.to(newGem, 2, {opacity: 1});
       game.append(newGem);
     });
   }
@@ -212,7 +238,9 @@ $("#play").click(function () {
   }
 
   function checkGameOver() {
+    console.log('checkGameOver()');
     if(numberOfLives <= 0) {
+      console.log('checkGameOver() should work');
       $(".game_lost #player_game_lost").attr("src", players[playerIndex]);
       $(".game_lost").show();
     }
