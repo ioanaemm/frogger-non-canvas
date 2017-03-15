@@ -104,22 +104,26 @@
   display: hidden;
 }
 
-#choose_player {
+#begin_game_screen #title {
   font-family: 'Roboto', 'sans-serif';
   font-size: 35px;
   font-weight: 500;
   color: #BAECE7;
   text-align: center;
   padding-top: 40px;
+  position: relative;
+  opacity: 0;
 }
 
-#player_image {
+#begin_game_screen #player_image {
   display: block;
   margin: auto;
   border: 2px solid #BAECE7;
+  opacity: 0;
 }
 
-#left, #right {
+#begin_game_screen #left,
+#begin_game_screen #right {
   width: 80px;
   height: 45px;
   background-color: #06715C;
@@ -130,9 +134,11 @@
   margin-right: 5px;
   outline: none;
   cursor: pointer;
+  opacity: 0;
+  position: relative;
 }
 
-#play {
+#begin_game_screen #play {
   width: 120px;
   height: 45px;
   font-family: 'Roboto', 'sans-serif';
@@ -147,9 +153,11 @@
   outline: none;
   display: block;
   margin: 30px auto 0;
+  opacity: 0;
+  position: relative;
 }
 
-#play:hover {
+#begin_game_screen #play:hover {
   background-color: #134037;
   color: #CBEBE5;
 }
@@ -192,7 +200,6 @@ span {
   display: none;
   z-index: 100000;
   position: relative;
-  visibility: hidden;
 }
 
 .wrapper {

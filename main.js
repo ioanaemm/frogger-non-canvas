@@ -15,22 +15,30 @@ function initGame() {
   var updateBugsInterval;
   var game = $('#game');
   var levels;
-
+  var playerIndex = 0;
+  var crtLevel = 0;
+  var gateX = Math.round(Math.random() * 4);
+  var numberOfLives;
   var rows = [
     "water", "stone", "stone", "stone", "grass", "grass"
   ];
-
   var players = [
     'images/char-boy.png',
     'images/char-horn-girl.png',
     'images/char-pink-girl.png',
     'images/char-princess-girl.png',
   ];
-  var playerIndex = 0;
 
-  var crtLevel = 0;
-  var gateX = Math.round(Math.random() * 4);
-  var numberOfLives = 3;
+
+  function animateBeginGameScreen() {
+    TweenMax.fromTo($("#begin_game_screen #title"), 0.4, {top: -30, opacity: 0}, {top: 0, opacity: 1});
+    TweenMax.fromTo($("#begin_game_screen #player_image"), 1, {opacity: 0, scale: 0.8}, {opacity: 1, scale: 1, delay: 0.2, ease: Elastic.easeOut});
+    TweenMax.fromTo($("#begin_game_screen #left"), 0.4, {opacity: 0, left: -50}, {opacity: 1, left: 0, delay: 0.5});
+    TweenMax.fromTo($("#begin_game_screen #right"), 0.4, {opacity: 0, left: 50}, {opacity: 1, left: 0, delay: 0.5});
+    TweenMax.fromTo($("#begin_game_screen #play"), 0.7, {opacity: 0, rotation: 720}, {opacity: 1, rotation: 0, delay: 0.9, ease: Back.easeOut});
+    TweenMax.fromTo($("#begin_game_screen #play"), 0.5, {scale: 0}, {scale: 1, delay: 0.9});
+  }
+  setTimeout(animateBeginGameScreen, 500);
 
   $(window).keydown(onKeyDown);
   function onKeyDown(event) {
@@ -87,7 +95,7 @@ function initGame() {
     $(".game_lost").hide();
     $("#begin_game_screen").hide();
     crtLevel = 0;
-    numberOfLives = 3;
+    numberOfLives = 0;
     drawTiles();
     startLevel();
     drawLives();
@@ -254,12 +262,8 @@ $("#play").click(function () {
     if(numberOfLives <= 0) {
       console.log('checkGameOver() should work');
       $(".game_lost #player_game_lost").attr("src", players[playerIndex]);
-      //TweenMax.from($(".game_lost").show(), 0.8, {autoAlpha: 0});
       $(".game_lost").css('display', 'block');
-      TweenMax.set($(".game_lost"),{autoAlpha:0});
-      // animate CSS autoAlpha to 1
-      TweenMax.to($(".game_lost"), 0.3, {autoAlpha: 1});
-
+      TweenMax.fromTo($(".game_lost"), 0.6, {scaleX: 0.7, scaleY: 0.7, opacity: 0}, {scaleX: 1, scaleY: 1, opacity: 1, ease: Back.easeOut});
     }
   }
 
@@ -329,9 +333,9 @@ $("#play").click(function () {
       "left": gateX * tileWidth + "px",
       "top": -5 + "px"
     });
-    TweenMax.set(gate, {autoAlpha: 0});
-    TweenMax.to(gate, 2, {autoAlpha: 1, ease: Bounce.easeOut});
-    TweenMax.to(gate, 0.6, {scaleX: 0.9, scaleY: 0.9, transformOrigin: "50% 80%", yoyo:true, repeat: 10000});
+    //TweenMax.set(gate, {autoAlpha: 0});
+    //TweenMax.to(gate, 2, {autoAlpha: 1, ease: Bounce.easeOut});
+    //TweenMax.to(gate, 0.6, {scaleX: 0.9, scaleY: 0.9, transformOrigin: "50% 80%", yoyo:true, repeat: 10000});
     game.append(gate);
   }
 
